@@ -1,7 +1,8 @@
 // creating variables that define different elements used through the following code 
 
 var timerElement = document.querySelector('#countdown');
-var buttonElement = document.querySelector('#game-start');
+var startbutton = document.querySelector('#game-start');
+var savescore = document.querySelector('#score');
 var gameboxelement = document.querySelector('#question-box');
 var questionElement = document.querySelector('#question');
 var answersElement = document.querySelector('#options');
@@ -15,6 +16,11 @@ var li4 = document.querySelector('#D');
 var timeLeft = 60;
 var score = 0;
 var currentQuestionIndex = 0; 
+
+//Setting Attributes of some list elements to make them easier to select
+
+li1.setAttribute("Style","background-color: var(--accent2);")
+li3.setAttribute("Style","background-color: var(--accent2);")
 
 // Creates an array that is able to store each question as an object. Properties are grabbed and then used for various functions to populate the quiz box and check the user input vs. the correct answer.
 var questionset = [
@@ -95,27 +101,26 @@ qlength = questionset.length;
 
 // function that start the countdown event. 
 function countdown() {
+    startbutton.setAttribute("style","display:none;");
 
     var timeInterval = setInterval(function() {
-
+//      Occurs when game is over. Calls score display, which I only want to occur after the game has ended. 
         if (timeLeft <= 0) {
             clearInterval(timeInterval);
             timerElement.textContent = "Game Over!";
             gameboxelement.style.display = "none";
             displayScore();
             return; 
+        // Countdown by 1s every 1000 ms 
         } else if (timeLeft >= 1) {
             timerElement.textContent = "Time Remaining: \n" + timeLeft + "s";
             timeLeft = (timeLeft - 1)
-        } else {
-            timerElement.textContent = "Times Up!";
-            clearInterval(timeInterval);
-        }
-    }, 1000);
+        } 
+    }, 1000)
 };
 
 
-// function that renders the content of a specific index from the questionset array. 
+// function that renders the content of a specific index from the questionset array. If there are no more questions left, it sets the timeLeft to 0 which ends the game. 
 function gameRender(i) {
     if (i >= qlength) {
         timeLeft = 0;
@@ -128,6 +133,9 @@ function gameRender(i) {
     li4.textContent = questionset[i].D;
 };
 
+
+// Checks var input (which is defined later via eventlisteners) and compares it to the correct answer. If the input is correct, score is increased. If the input is incorrect, time is detracted from timeLeft variable.
+
 function checkAnswer(input) {
     // Get the selected answer
     var selectedAnswer = input;
@@ -138,25 +146,26 @@ function checkAnswer(input) {
     if (selectedAnswer === correctAnswer) {
         // If correct, increment the score
         score++;
-        currentQuestionIndex++;
-        textElement.textContent = "Nice job- you got that question right!! Let's try and keep the ball rolling!";
+        textElement.textContent = "You got that question right!! Nice job!";
     } else {
         timeLeft = (timeLeft - 5);
-        textElement.textContent = "You got that last question wrong! Let's try again!";
+        textElement.textContent = "You got the last question wrong! Better luck next time";
     }
     // Move on to the next question
+    currentQuestionIndex++;
     // Render the next question
     gameRender(currentQuestionIndex);
 }
 
 
 function displayScore() {
-    textElement.textContent = "Your final score is: " + score;
+    savescore.setAttribute("style","display:block;");
+    textElement.textContent = "Final score: " + score;
 }
 
 
 
-buttonElement.addEventListener("click", function () {
+startbutton.addEventListener("click", function () {
     countdown();
     gameboxelement.setAttribute("style","display:inline;");
 
@@ -176,6 +185,21 @@ buttonElement.addEventListener("click", function () {
         checkAnswer("D");
     });
 } );
+
+savescore.addEventListener("click", function(event){
+    event.preventDefault();
+    
+    var input = prompt ("Would you like to save your score?", "First Initial, Last Initial").trim();
+
+    var user = {
+        "Username ": input,
+        "Score: ": score
+    };
+
+    localStorage.setItem("High Score",JSON.stringify(user));
+
+
+});
 
 
 // function checkvalue(i) {
