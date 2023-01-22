@@ -1,6 +1,9 @@
 # Are-you-Smarter-than-a-Coder
 
+### Before Pressing Play
 ![Webpage Preview](./assets/preview.png)
+
+### After Pressing Play
 ![Preview of launched App](./assets/preview1.png)
 [Deployment Link](https://tykervella.github.io/Are-you-Smarter-than-a-Coder/)
 

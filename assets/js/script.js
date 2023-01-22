@@ -1,7 +1,7 @@
 // creating variables that define different elements used through the following code 
 
 var timerElement = document.querySelector('#countdown');
-var startbutton = document.querySelector('#game-start');
+var startbutton = document.querySelector('#start');
 var savescore = document.querySelector('#score');
 var gameboxelement = document.querySelector('#question-box');
 var questionElement = document.querySelector('#question');
