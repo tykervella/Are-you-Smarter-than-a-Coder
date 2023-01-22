@@ -34,6 +34,7 @@ main {
     justify-content: space-around;
     align-items: center;
     background-color: transparent;
+    position: relative;
 }
 
 #game-aside {
@@ -57,9 +58,26 @@ main {
     width: 95%;
     /* border: 5px solid black;  */
     background-color: transparent;
-    flex-basis: 75%;
+    height: 65%;
     display: none;
 }
+
+#text-channel {
+    width: 95%;
+    /* border: 5px solid black;  */
+    background-color: var(--light);
+    height: 60px;
+    position: absolute;
+    border: 5px solid var(--dark);
+    border-radius: 25px;
+    bottom: -65px;
+    left: 0;
+    padding-top: 10px;
+    padding-left: 25px; 
+
+}
+
+
 
 #options {
     background-color: transparent;
