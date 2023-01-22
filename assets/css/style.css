@@ -1,14 +1,27 @@
-* {
-    background-color: #555555;
+@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,700;1,700&family=Dancing+Script&family=Press+Start+2P&family=VT323&display=swap');
+
+:root {
+    --neutral: #22223b;
+    --dark: #006494;
+    --light: #b8b8ff;
+    --accent: #13293d;
+    --accent2: #1b98e0;
 }
+
+* {
+    background-color: var(--neutral);
+    font-family: 'Comic Neue', cursive;
+
+}
+
 main {
     width: 80%;
     height: 450px;
     margin: 0 auto; 
     margin-top: 50px;
-    border: 6px solid blue; 
+    border: 6px solid var(--dark);
     border-radius: 25px; 
-    background-color: skyblue; 
+    background-color: var(--light);
     display: flex;
     justify-content: space-around;
 }
@@ -20,7 +33,6 @@ main {
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
-    padding-top: 5%;
     background-color: transparent;
 }
 
@@ -35,44 +47,75 @@ main {
     background-color: transparent;
 }
 
+#question {
+    color: var(--accent);
+    font-size: 24px;
+    font-style: oblique;
+}
 
-#question-section {
+#question-box {
     width: 95%;
-    border: 5px solid black; 
-    background-color: whitesmoke;
+    /* border: 5px solid black;  */
+    background-color: transparent;
     flex-basis: 75%;
+    display: none;
 }
 
-#game-bottom {
-    border: 5px solid black; 
-    background-color: whitesmoke;
-    width: 95%;
-    flex-basis: 15%;
+#options {
+    background-color: transparent;
 }
+
+.answer {
+    background-color: transparent;
+    line-height: 60px;
+    margin-top: 15px;
+    font-size: 18px;
+}
+
 
 #countdown {
     width: 95%; 
     height: 10%;
     margin: 5% auto; 
     padding-top: 7px;
-    border: 4px solid red;
-    background-color: coral;
+    border: 4px solid var(--accent);
+    background-color: var(--dark);
     border-radius: 50px;
     text-align: center;
+    font-size: 22px;
 }
 
 #game-decor {
+    margin-top: 25px;
     height: 70%;
+    background-color: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#game-decor img {
+    display: block;
+    width: 60%;
+    height: auto;
+    background-color: transparent;
+
 }
 
 #game-start {
     width: 40%;
     height: 10%;
     margin: 0 auto; 
-    border: 4px solid red;
-    background-color: coral;
+    border: 4px solid whitesmoke;
+    background-color: var(--accent2);
     border-radius: 50px;
     text-align: center;
+    position: absolute;
+    bottom: 35px;
+    right: -10px;
+    font-size: 33px;
+    color: whitesmoke;
+    font-weight: 900;
 }
     
 
