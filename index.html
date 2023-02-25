@@ -20,12 +20,12 @@
 
 
     <main> 
-        <div id="buttons">
-            <button id="start">START</button>
-            <button id="score">SAVE YOUR SCORE?</button>
-        </div>
+        
 
         <div id= "game-box">
+            <div id="buttons">
+                <button id="start">START</button>
+            </div>
             <div id="question-box">
                 <h2 id="question">Sample Question</h2>
                 <ul id="options">
@@ -38,6 +38,25 @@
                     <li id="D" class="answer">D
                     </li>
                 </ul>
+            </div>
+            <div id="score-box">
+            
+                <h2 id="score-display">testing 123</h2>
+
+                <form id="userbox"class="transparent">
+                    <label for="intials" class="transparent">Would you like to save your score?</label><br>
+                    <input type="text" name="initials" id="userinput" class="transparent" placeholder="First initial Last initial" ><br>
+
+                    <button id="score">SUBMIT</button>
+
+                </form>
+
+                <div id="high-scores">
+                    <div id="topscores">
+
+                    </div>
+                </div>
+            
             </div>
 
         </div>
@@ -54,6 +73,8 @@
     <footer>
 
     </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
     <script src="./assets/js/script.js"></script>
 

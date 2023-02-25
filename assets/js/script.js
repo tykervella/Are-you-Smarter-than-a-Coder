@@ -7,20 +7,25 @@ var gameboxelement = document.querySelector('#question-box');
 var questionElement = document.querySelector('#question');
 var answersElement = document.querySelector('#options');
 var textElement = document.querySelector('#text-channel');
+var startElement = document.querySelector('#buttons');
+var scoreElement = document.querySelector('#score-box');
+var scoreTextElement = document.querySelector("#score-display");
+var userinput = $('input[name="initials"]');
 var li1 = document.querySelector('#A');
 var li2 = document.querySelector('#B');
 var li3 = document.querySelector('#C');
 var li4 = document.querySelector('#D');
-
-// grabbing local data and displaying stored high score
-var highscore = localStorage.getItem("High Score");
-textElement.textContent = "High Score: " + highscore;
-
+var topscores = document.querySelector("#topscores")
 
 // global variables thatre true at the start of each game. Will be manipulated as other functions later. 
 var timeLeft = 60;
 var score = 0;
 var currentQuestionIndex = 0; 
+
+// variables set for local storage of highscore
+var highscore = [];
+storedScores();
+
 
 //Setting Attributes of some list elements to it easier for user to select the option they want
 
@@ -101,6 +106,7 @@ var questionset = [
         "Answer": "D",
     }, 
 ];
+
 // variable to store how many questions are in the quiz
 qlength = questionset.length;
 
@@ -127,6 +133,9 @@ function countdown() {
 
 // function that renders the content of a specific index from the questionset array. If there are no more questions left, it sets the timeLeft to 0 which ends the game. 
 function gameRender(i) {
+    if (i===1) {
+        textElement.setAttribute("style","display:block")
+    }
     if (i >= qlength) {
         timeLeft = 0;
         return;
@@ -144,7 +153,6 @@ function gameRender(i) {
 function checkAnswer(input) {
     // Get the selected answer
     var selectedAnswer = input;
-    console.log (selectedAnswer);
     // Get the correct answer from the current question object
     var correctAnswer = questionset[currentQuestionIndex].Answer;
     // Compare the selected answer to the correct answer
@@ -165,17 +173,21 @@ function checkAnswer(input) {
 
 
 
-// Displays final score. Shows button that allows user to store score in localstorage
+// Displays final score and top scores. Shows button that allows user to store score in localstorage
 function displayScore() {
-    savescore.setAttribute("style","display:block;");
-    textElement.textContent = "Final score: " + score;
+    scoreElement.setAttribute("style","display:flex");
+    textElement.textContent = "";
+    textElement.setAttribute("style", "display:none");
+    scoreTextElement.textContent = "Your final score was: " + score;
+
 }
 
 
 // event listener for start button.  
 startbutton.addEventListener("click", function () {
     countdown();
-    //makes 1st question display inbox
+    //makes timer dissapear and 1st question display in box. text channel appears. 
+    startElement.setAttribute("style","display:none");
     gameboxelement.setAttribute("style","display:inline;");
     gameRender(currentQuestionIndex);
 
@@ -198,89 +210,67 @@ startbutton.addEventListener("click", function () {
 // creates event listener for save button. Prompts user for their first and last initial and saves that input with their score in localstorage. 
 savescore.addEventListener("click", function(event){
     event.preventDefault();
+    var input = userinput.val();
+
+    // updates the highscore array (that's already been previously populated upon loading) and pushes new version to local storage
+    highscore.push({input,score});
+    localStorage.setItem("High Score", JSON.stringify(highscore))
     
-    var input = prompt ("Would you like to save your score?", "First Initial, Last Initial").trim();
-
-    var user = {
-        "Username ": input,
-        "Score: ": score
-    };
-
-    localStorage.setItem("High Score",JSON.stringify(user));
-
+    // updates highscore array with new pushed array 
+    storedScores(); 
 
 });
 
+//gets stored scores from local storage and assigns it to highscore array 
+function storedScores() {
+    var storedScores = JSON.parse(localStorage.getItem("High Score"));
 
-// function checkvalue(i) {
-//     answersElement.addEventListener("click", function (event){
-//         var element = event.target; 
-//         var state = element.getAttribute("data-state");
-//         var value = element.getAttribute("data-value");
-//         var answer = questionset[i].Answer;
+    if (storedScores !== null) {
+        highscore = storedScores;
 
-//         var event;
+        // sorts highscore array by score
+        highscore.sort(function(a, b) {
+            return b.score - a.score;
+          });
+          
+        
+        // calls function to display highscores 
+        showscores(highscore)
+        } 
+}
 
+//function to dynamically display the top scores 
+function showscores(array) {
 
-//         if (state==="chosen") {
-//             if (value === answer) {
-//                 event = true;
-//                 return event;
-//             } else {
-//                 timeLeft = (timeLeft - 5)
-//             }
-//         }
+    //clears top scores to avoid appending the same element multiple times 
+    topscores.innerHTML= "";
 
+    var titleEl = document.createElement ('p');
+    titleEl.textContent = "Top Players!"
 
-//     })
+    topscores.appendChild(titleEl)
 
-// }
+    // allows for the top 4 scores to be displayed 
+    // if less than 4 scores are displayed it will just display that many 
+    if (highscore.length<4) {
+        for (var i=0; i<highscore.length; i++) {
+            var user = array[i].input
+            var score = array[i].score
 
+            // creates element and appends it to the topscores element 
+            var display = document.createElement('p'); 
+            display.textContent = "User: " + user + " Score: " + score; 
+            topscores.appendChild(display)
+        }
+    } else { 
+        for (var i=0; i<4; i++) {
+            var user = array[i].input
+            var score = array[i].score
 
-
-//     function checkInput (i) {
-//         gameRender(i);
-
-//         answersElement.addEventListener("click", function (event){
-//             var answer = questionset[i].Answer
-//             var element = event.target; 
-//             var value = element.getAttribute("data-value");
-                        
-                    
-//             if (element.matches("#A")) {
-//                 if (answer==value) {
-//                     console.log("Correct!!!")
-//                 } else {
-//                     timeLeft = (timeLeft - 5);
-//                 }
-//             }
-//         })
-                      
-//             // } else if (element.matches("#B")) {
-//             //     input= value;
-//             //     return input;            
-//             // } else if (element.matches("#C")) {
-//             //     input= value;
-//             //     return input;             
-//             // } else if (element.matches("#D")) {
-//             //     input= value;
-//             //     return input;                  
-//             // }
-//         // console.log (input)
-//         }
-
-    
-
-//     console.log(checkInput(0));
-// //         if (input == ("A" || "B" || "C" || "D")) {
-// //             console.log(input);
-// //             console.log('Im in this line of code');
-// //         } else {
-// //             
-
-
-//     }
-// }
-
-
-
+            // creates element and appends it to the topscores element 
+            var display = document.createElement('p'); 
+            display.textContent = "User: " + user + " Score: " + score; 
+            topscores.appendChild(display)
+        }
+    }
+}
